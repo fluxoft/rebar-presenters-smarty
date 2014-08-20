@@ -1,6 +1,6 @@
 {
-	"name": "fluxoft/rebar/presenters/smarty",
-	"description": "Rebar: A simple but sturdy support framework.",
+	"name": "fluxoft/rebar-presenters-smarty",
+	"description": "A Smarty presenter for Rebar.",
 	"type": "library",
 	"keywords": ["framework", "mvc", "rebar"],
 	"license": "MIT",
