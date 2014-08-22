@@ -10,24 +10,35 @@ use \Fluxoft\Rebar\Http\Response;
  * @property string Template
  */
 class Smarty implements PresenterInterface {
-	protected $smarty = null;
+	/**
+	 * @var \Smarty
+	 */
+	protected $smarty;
 	protected $templatePath;
 	protected $template;
 	protected $layout;
 
-	public function __construct(\Smarty $smarty, $templatePath, $layout = 'default.tpl', $template = '') {
+	public function __construct(
+		\Smarty $smarty,
+		$templatePath,
+		$template = '/default.html',
+		$layout = '/layout.html'
+	) {
 		$this->smarty = $smarty;
 		$this->templatePath = $templatePath;
-		$this->layout = $layout;
 		$this->template = $template;
+		$this->layout = $layout;
 	}
 
 	public function Render(Response $response, array $data) {
-		if (strlen($this->template)) {
-			$this->smarty->assign('templateFile', $this->templatePath.$this->template);
-		}
 		$this->smarty->assign($data);
-		$output = $this->smarty->fetch($this->templatePath.$this->layout);
+		if (strlen($this->layout)) {
+			$this->smarty->assign('templateFile', $this->templatePath.$this->template);
+			$template = $this->templatePath.$this->layout;
+		} else {
+			$template = $this->templatePath.$this->template;
+		}
+		$output = $this->smarty->fetch($template);
 
 		$response->Body = $output;
 		$response->Send();
@@ -40,6 +51,12 @@ class Smarty implements PresenterInterface {
 			case 'Layout':
 				$this->layout = $val;
 				break;
+			default:
+				throw new \InvalidArgumentException(sprintf(
+					'The property %s does not exist.',
+					$var
+				));
+				break;
 		}
 	}
 	public function __get($var) {
@@ -49,6 +66,12 @@ class Smarty implements PresenterInterface {
 				break;
 			case 'Layout':
 				return $this->layout;
+				break;
+			default:
+				throw new \InvalidArgumentException(sprintf(
+					'The property %s does not exist.',
+					$var
+				));
 				break;
 		}
 	}
