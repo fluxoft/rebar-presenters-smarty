@@ -22,7 +22,7 @@ class Smarty implements PresenterInterface {
 		\Smarty $smarty,
 		$templatePath,
 		$template = '/default.html',
-		$layout = '/layout.html'
+		$layout = ''
 	) {
 		$this->smarty = $smarty;
 		$this->templatePath = $templatePath;
